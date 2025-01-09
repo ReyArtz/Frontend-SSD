@@ -1,0 +1,42 @@
+<div class="register-container">
+    <h2>Register</h2>
+  
+    <!-- Register with Email -->
+    <form (submit)="registerWithEmail()">
+      <input
+        type="email"
+        [(ngModel)]="email"
+        placeholder="Email"
+        required
+      />
+      <input
+        type="password"
+        [(ngModel)]="password"
+        placeholder="Password"
+        required
+      />
+      <input
+        type="password"
+        [(ngModel)]="confirmPassword"
+        placeholder="Confirm Password"
+        required
+      />
+      <button type="submit">Register with Email</button>
+    </form>
+  
+    <!-- Register with Google -->
+    <div class="google-register">
+      <button (click)="registerWithGoogle()">Register with Google</button>
+    </div>
+  
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="error">
+      <p>{{ errorMessage }}</p>
+    </div>
+  
+    <!-- Go to Login Page -->
+    <p>
+      Already have an account? <a routerLink="/login">Login here</a>
+    </p>
+  </div>
+  
