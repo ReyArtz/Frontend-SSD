@@ -1,0 +1,23 @@
+/* Add this to deposit-money.component.css */
+.logout-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .logout-btn:hover {
+    background-color: #ff1a1a;
+  }
+  
+  .deposit-money-container {
+    margin-top: 50px;
+    /* Your other styles for the container */
+  }
+  

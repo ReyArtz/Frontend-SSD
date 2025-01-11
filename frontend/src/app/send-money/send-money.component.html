@@ -1,0 +1,38 @@
+<div class="send-money-container">
+    <h2>Send Money</h2>
+    <form (ngSubmit)="sendMoney()">
+      <div class="form-group">
+        <label for="recipient">Send To</label>
+        <input
+          type="text"
+          id="recipient"
+          [(ngModel)]="recipient"
+          name="recipient"
+          placeholder="Enter recipient's name"
+          class="form-control"
+          required
+        />
+      </div>
+  
+      <div class="form-group">
+        <label for="amount">Amount</label>
+        <input
+          type="number"
+          id="amount"
+          [(ngModel)]="amount"
+          name="amount"
+          placeholder="Enter amount"
+          class="form-control"
+          required
+          min="1"
+        />
+      </div>
+  
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+  
+      <button type="submit" class="btn btn-primary">Send Money</button>
+    </form>
+  </div>
+  

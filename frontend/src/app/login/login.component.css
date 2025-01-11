@@ -1,32 +1,70 @@
+/* Set the background image */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+ /* background-image: url('C:\Users\PC\Desktop\CTI\CTI2\SEF\Frontend-SSD\frontend\src\assets\background.jpg'); /* Relative path to the image */
+  background-size: cover;
+  background-position: center;
+}
+
+/* Container to center the form */
 .login-container {
-    width: 300px;
-    margin: 100px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .login-container input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-  }
-  
-  .login-container button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .login-container button:hover {
-    background-color: #0056b3;
-  }
-  
-  .register-link {
-    text-align: center;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Optional: darken the background for contrast */
+}
+
+/* Form container styles */
+.form-container {
+  text-align: center;
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Input field styles */
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Submit button styles */
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Google login button styles */
+.google-login button {
+  background-color: #db4437; /* Google Red */
+  color: white;
+  margin-top: 10px;
+}
+
+.google-login button:hover {
+  background-color: #b33c29;
+}
+
+/* Register link styles */
+.register-link {
+  margin-top: 15px;
+}

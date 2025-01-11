@@ -2,9 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { Router } from '@angular/router';
-import { initializeApp } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -19,39 +17,63 @@ export class RegisterComponent {
   confirmPassword: string = '';
   errorMessage: string = '';
 
-  constructor(private router: Router) {
-    const app = initializeApp(environment.firebaseConfig);
-    const auth = getAuth(app);
-  }
+  constructor(private router: Router) {}
 
+  // Method to register with email
   registerWithEmail() {
+    // Check if all fields are filled out
+    if (!this.email || !this.password || !this.confirmPassword) {
+      this.errorMessage = 'All fields are required';
+      return;
+    }
+
+    // Check if passwords match
+    if (this.password !== this.confirmPassword) {
+      this.errorMessage = 'Passwords do not match';
+      return;
+    }
+
+    // Check password length
+    if (this.password.length < 6) {
+      this.errorMessage = 'Password must be at least 6 characters long';
+      return;
+    }
+
     const auth = getAuth();
 
-    if (this.password === this.confirmPassword) {
-      createUserWithEmailAndPassword(auth, this.email, this.password)
-        .then((userCredential) => {
-          console.log('User registered:', userCredential.user);
-          this.router.navigate(['/login']);
-        })
-        .catch((error) => {
-          console.error('Registration error:', error.message);
-        });
-    } else {
-      console.error('Passwords do not match');
-    }
+    // Attempt to create the user with email/password
+    createUserWithEmailAndPassword(auth, this.email, this.password)
+      .then((userCredential) => {
+        console.log('User registered:', userCredential.user);
+        this.errorMessage = ''; // Clear any previous errors
+        this.router.navigate(['/login']); // Redirect to login page after successful registration
+      })
+      .catch((error) => {
+        console.error('Registration error:', error.message);
+        this.errorMessage = error.message; // Display Firebase error message
+      });
   }
 
+  // Method to register with Google
   registerWithGoogle() {
     const auth = getAuth();
     const provider = new GoogleAuthProvider();
 
+    // Attempt to sign in with Google
     signInWithPopup(auth, provider)
       .then((result) => {
         console.log('Google registration successful:', result.user);
-        this.router.navigate(['/login']);
+        this.errorMessage = ''; // Clear any previous errors
+        this.router.navigate(['/login']); // Redirect to login page after successful Google registration
       })
       .catch((error) => {
         console.error('Google registration error:', error.message);
+        this.errorMessage = 'Failed to register with Google. Please try again.'; // Display error message for Google login
       });
+  }
+
+  // Method to navigate to the login page
+  goToLogin() {
+    this.router.navigate(['/login']); // Redirect to login page
   }
 }

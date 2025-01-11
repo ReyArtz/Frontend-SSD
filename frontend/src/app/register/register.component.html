@@ -1,42 +1,47 @@
 <div class="register-container">
-    <h2>Register</h2>
-  
-    <!-- Register with Email -->
-    <form (submit)="registerWithEmail()">
-      <input
-        type="email"
-        [(ngModel)]="email"
-        placeholder="Email"
-        required
-      />
-      <input
-        type="password"
-        [(ngModel)]="password"
-        placeholder="Password"
-        required
-      />
-      <input
-        type="password"
-        [(ngModel)]="confirmPassword"
-        placeholder="Confirm Password"
-        required
-      />
-      <button type="submit">Register with Email</button>
-    </form>
-  
-    <!-- Register with Google -->
-    <div class="google-register">
-      <button (click)="registerWithGoogle()">Register with Google</button>
-    </div>
-  
-    <!-- Error Message -->
-    <div *ngIf="errorMessage" class="error">
-      <p>{{ errorMessage }}</p>
-    </div>
-  
-    <!-- Go to Login Page -->
-    <p>
-      Already have an account? <a routerLink="/login">Login here</a>
-    </p>
+  <h2>Register</h2>
+
+  <!-- Register with Email -->
+  <form (submit)="registerWithEmail()">
+    <input
+      type="email"
+      [(ngModel)]="email"
+      name="email"
+      placeholder="Email"
+      required
+    />
+    <input
+      type="password"
+      [(ngModel)]="password"
+      name="password"
+      placeholder="Password"
+      required
+    />
+    <input
+      type="password"
+      [(ngModel)]="confirmPassword"
+      name="confirmPassword"
+      placeholder="Confirm Password"
+      required
+    />
+    <button type="submit" class="btn-blue">Register with Email</button>
+  </form>
+
+  <!-- Register with Google -->
+  <div class="google-register">
+    <button (click)="registerWithGoogle()" class="btn-red">
+      Register with Google
+    </button>
   </div>
-  
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <!-- Go to Login Page -->
+  <p>
+    Already have an account? 
+    <a href="javascript:void(0)" (click)="goToLogin()" class="login-link">Login here</a>
+  </p>
+</div>
