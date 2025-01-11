@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { Router } from '@angular/router';
@@ -6,21 +6,24 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { environment } from '../../environments/environment';
 import { RouterModule } from '@angular/router'; 
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule], // Add FormsModule here
+  imports: [CommonModule, FormsModule, RouterModule, HttpClientModule], // Add FormsModule here
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
+@Injectable()
 export class LoginComponent {
   user: any = null;
   email: string = '';
   password: string = '';
   errorMessage: string = ''; // Variable to store error messages
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private http: HttpClient) {
     const app = initializeApp(environment.firebaseConfig);
     const auth = getAuth(app);
 
@@ -41,6 +44,7 @@ export class LoginComponent {
     signInWithPopup(auth, provider)
       .then((result) => {
         this.user = result.user;
+        sessionStorage.setItem('token', this.user.accessToken);
         // After successful login, redirect to the main page
         this.router.navigate(['/main/balance']);
       })
@@ -76,6 +80,13 @@ export class LoginComponent {
       .then((userCredential) => {
         // Login successful, redirect to the main page
         this.user = userCredential.user;
+        sessionStorage.setItem('token', this.user.accessToken);
+
+        this.http.get('/whoami') // asta e doar un exemplu de request, toate chestiile(balance, etc) se iau din backend. Firebase e doar pentru login si register
+          .subscribe((response) => {
+            console.log(response);
+          });
+
         this.router.navigate(['/main/balance']);
       })
       .catch((error) => {

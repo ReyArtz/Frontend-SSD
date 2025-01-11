@@ -2,9 +2,12 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { getAuth } from 'firebase/auth';
 import { getDatabase, ref, get, set } from 'firebase/database';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-send-money',
+  standalone: true,
+  imports: [FormsModule],
   templateUrl: './send-money.component.html',
   styleUrls: ['./send-money.component.css']
 })

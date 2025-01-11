@@ -1,21 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Injectable, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { getAuth, signOut } from 'firebase/auth';
-import { getDatabase, ref, get, set } from 'firebase/database';
 import { environment } from '../../environments/environment';
 import { initializeApp } from 'firebase/app';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-main',
+  standalone: true,
+  imports: [RouterModule],
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
+
+@Injectable()
 export class MainComponent implements OnInit {
   user: any;
   balance: number = 0;
   errorMessage: string = '';
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private http: HttpClient) {
     initializeApp(environment.firebaseConfig); // Initialize Firebase with environment config
     const auth = getAuth();
     this.user = auth.currentUser;
@@ -30,32 +34,24 @@ export class MainComponent implements OnInit {
   }
 
   fetchBalance() {
-    const db = getDatabase();
-    const balanceRef = ref(db, 'users/' + this.user.uid + '/balance');
-    get(balanceRef).then((snapshot) => {
-      if (snapshot.exists()) {
-        this.balance = snapshot.val();
-      } else {
-        this.balance = 0; 
-      }
-    }).catch((error: any) => {
-      console.error("Error fetching balance:", error);
-      this.errorMessage = "Error fetching balance.";
+    this.http.get('/balance').subscribe((data: any) => { //ceva de genul asta ar trebui sa fie
+      this.balance = data.balance;
     });
   }
 
   updateBalance(newBalance: number) {
-    const db = getDatabase();
-    const balanceRef = ref(db, 'users/' + this.user.uid);
+    // const db = getDatabase();
+    // const balanceRef = ref(db, 'users/' + this.user.uid);
 
-    set(balanceRef, {
-      balance: newBalance
-    }).then(() => {
-      this.balance = newBalance; 
-    }).catch((error: any) => {
-      console.error("Error updating balance:", error);
-      this.errorMessage = "Error updating balance.";
-    });
+    // set(balanceRef, {
+    //   balance: newBalance
+    // }).then(() => {
+    //   this.balance = newBalance; 
+    // }).catch((error: any) => {
+    //   console.error("Error updating balance:", error);
+    //   this.errorMessage = "Error updating balance.";
+    // });
+    return -1;
   }
 
   logout() {

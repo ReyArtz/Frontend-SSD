@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { Router } from '@angular/router';
 import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -11,13 +12,15 @@ import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWith
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
+
+@Injectable()
 export class RegisterComponent {
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
   errorMessage: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private http: HttpClient) {}
 
   // Method to register with email
   registerWithEmail() {
@@ -45,12 +48,15 @@ export class RegisterComponent {
     createUserWithEmailAndPassword(auth, this.email, this.password)
       .then((userCredential) => {
         console.log('User registered:', userCredential.user);
-        this.errorMessage = ''; // Clear any previous errors
-        this.router.navigate(['/login']); // Redirect to login page after successful registration
+        this.errorMessage = '';
+
+        // this.http.post('/create', { type: "user" }); //deafault value, should be a user input. This is used to create a user in the database
+
+        this.router.navigate(['/login']);
       })
       .catch((error) => {
         console.error('Registration error:', error.message);
-        this.errorMessage = error.message; // Display Firebase error message
+        this.errorMessage = error.message;
       });
   }
 

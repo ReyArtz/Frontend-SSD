@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { getAuth, signOut } from 'firebase/auth';
 import { getDatabase, ref, get, set } from 'firebase/database';
 
 @Component({
   selector: 'app-deposit-money',
+  standalone: true,
+  imports: [FormsModule],
   templateUrl: './deposit-money.component.html',
   styleUrls: ['./deposit-money.component.css']
 })
