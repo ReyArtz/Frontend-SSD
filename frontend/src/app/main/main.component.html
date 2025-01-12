@@ -1,27 +1,37 @@
 <div class="main-container">
-    <!-- Left Sidebar Menu -->
-    <div class="sidebar">
-      <h2>Menu</h2>
-      <ul>
-        <li><button (click)="navigateTo('balance')">View/Modify Balance</button></li>
-        <li><button (click)="navigateTo('send-money')">Send Money</button></li>
-        <li><button (click)="navigateTo('add-funds')">Deposit Money</button></li>
-        <li><button (click)="navigateTo('taxes')">Taxes</button></li>
-        <li><button (click)="navigateTo('history')">View History</button></li>
-      </ul>
+  <!-- Left Sidebar Menu -->
+  <div class="sidebar">
+    <h2>Menu</h2>
+    <ul>
+      <li><button (click)="navigateTo('main')">View/Modify Balance</button></li>
+      <li><button (click)="navigateTo('send-money')">Send Money</button></li>
+      <li><button (click)="navigateTo('deposit-money')">Deposit Money</button></li>
+      <li><button (click)="navigateTo('taxes')">Taxes</button></li>
+      <li><button (click)="navigateTo('history')">View History</button></li>
+    </ul>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="content-area">
+    <div class="top-bar">
+      <h2>Welcome, {{ user?.displayName }}</h2>
+      <button class="logout-btn" (click)="logout()">Logout</button>
     </div>
-  
-    <!-- Main Content Area -->
-    <div class="content-area">
-      <div class="top-bar">
-        <h2>Welcome, {{ user?.displayName }}</h2>
-        <button class="logout-btn" (click)="logout()">Logout</button>
+
+    <!-- Balance Section -->
+    <div *ngIf="currentPage === 'main'" class="balance-section">
+      <h3>Your Account Balance</h3>
+      <p>Current Balance: ${{ balance }}</p>
+
+      <div class="balance-actions">
+        <button class="btn-refresh" (click)="refreshBalance()">Update Balance</button>
+        <button class="btn-check" (click)="checkBalance()">Check Balance</button>
       </div>
-  
-      <!-- Dynamic Content Based on Navigation -->
-      <div class="page-content">
-        <router-outlet></router-outlet>
-      </div>
+    </div>
+
+    <!-- Dynamic Content Based on Navigation -->
+    <div class="page-content">
+      <router-outlet></router-outlet>
     </div>
   </div>
-  
+</div>

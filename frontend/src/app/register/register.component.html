@@ -3,6 +3,7 @@
 
   <!-- Register with Email -->
   <form (submit)="registerWithEmail()">
+    <!-- Email Input -->
     <input
       type="email"
       [(ngModel)]="email"
@@ -10,6 +11,8 @@
       placeholder="Email"
       required
     />
+
+    <!-- Password Input -->
     <input
       type="password"
       [(ngModel)]="password"
@@ -17,6 +20,8 @@
       placeholder="Password"
       required
     />
+
+    <!-- Confirm Password Input -->
     <input
       type="password"
       [(ngModel)]="confirmPassword"
@@ -24,6 +29,15 @@
       placeholder="Confirm Password"
       required
     />
+
+    <!-- User Type Dropdown -->
+    <select [(ngModel)]="userType" name="userType" required>
+      <option value="" disabled>Select User Type</option>
+      <option value="user">User</option>
+      <option value="facturier">Facturier</option>
+    </select>
+
+    <!-- Register Button -->
     <button type="submit" class="btn-blue">Register with Email</button>
   </form>
 

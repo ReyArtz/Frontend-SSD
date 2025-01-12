@@ -1,1 +1,44 @@
-<p>history works!</p>
+<div class="main-container">
+    <!-- Sidebar Menu -->
+    <div class="sidebar">
+      <h2>Menu</h2>
+      <ul>
+        <li><button (click)="navigateTo('main')">View/Modify Balance</button></li>
+        <li><button (click)="navigateTo('send-money')">Send Money</button></li>
+        <li><button (click)="navigateTo('add-funds')">Deposit Money</button></li>
+        <li><button (click)="navigateTo('taxes')">Taxes</button></li>
+        <li><button (click)="navigateTo('history')">View History</button></li>
+      </ul>
+    </div>
+  
+    <!-- Main Content Area -->
+    <div class="content-area">
+      <!-- Top Bar with Logout Button -->
+      <div class="top-bar">
+        <h2>Transaction History</h2>
+        <button (click)="logout()" class="logout-btn">Logout</button>
+      </div>
+  
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+  
+      <!-- Transaction History List -->
+      <div *ngIf="transactions.length > 0" class="history-list">
+        <ul>
+          <li *ngFor="let transaction of transactions">
+            <div class="transaction-item">
+              <span class="transaction-description">{{ transaction.description }}</span>
+              <span class="transaction-date">{{ transaction.date | date: 'short' }}</span>
+              <span class="transaction-amount">${{ transaction.amount }}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="transactions.length === 0" class="no-history">
+        No transaction history available.
+      </div>
+    </div>
+  </div>
+  

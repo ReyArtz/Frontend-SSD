@@ -1,4 +1,4 @@
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { Router } from '@angular/router';
@@ -32,7 +32,7 @@ export class LoginComponent {
       if (user) {
         this.user = user;
         // If the user is logged in, redirect to the main page
-        this.router.navigate(['/main/balance']);
+        this.router.navigate(['/main']); // Redirect to the main page without '/balance'
       }
     });
   }
@@ -46,7 +46,7 @@ export class LoginComponent {
         this.user = result.user;
         sessionStorage.setItem('token', this.user.accessToken);
         // After successful login, redirect to the main page
-        this.router.navigate(['/main/balance']);
+        this.router.navigate(['/main']); // Redirect to the main page
       })
       .catch((error) => {
         console.error(error.message);
@@ -82,12 +82,12 @@ export class LoginComponent {
         this.user = userCredential.user;
         sessionStorage.setItem('token', this.user.accessToken);
 
-        this.http.get('/whoami') // asta e doar un exemplu de request, toate chestiile(balance, etc) se iau din backend. Firebase e doar pentru login si register
+        this.http.get('/whoami') // Example of a request to backend
           .subscribe((response) => {
             console.log(response);
           });
 
-        this.router.navigate(['/main/balance']);
+        this.router.navigate(['/main']); // Redirect to the main page
       })
       .catch((error) => {
         // Handle errors here (wrong email/password)

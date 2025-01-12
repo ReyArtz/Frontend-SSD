@@ -1,1 +1,41 @@
-<p>taxes works!</p>
+<div class="main-container">
+    <!-- Sidebar Menu -->
+    <div class="sidebar">
+      <h2>Menu</h2>
+      <ul>
+        <li><button [class.active]="currentPage === 'main'" (click)="navigateTo('main')">View/Modify Balance</button></li>
+        <li><button [class.active]="currentPage === 'send-money'" (click)="navigateTo('send-money')">Send Money</button></li>
+        <li><button [class.active]="currentPage === 'deposit-money'" (click)="navigateTo('deposit-money')">Deposit Money</button></li>
+        <li><button [class.active]="currentPage === 'taxes'" (click)="navigateTo('taxes')">Taxes</button></li>
+        <li><button [class.active]="currentPage === 'history'" (click)="navigateTo('history')">View History</button></li>
+      </ul>
+    </div>
+  
+    <!-- Content Area -->
+    <div class="content-area">
+      <!-- Top Bar with Logout Button -->
+      <div class="top-bar">
+        <h2>Taxes</h2>
+        <button class="logout-btn" (click)="logout()">Logout</button>
+      </div>
+  
+      <!-- Bills List -->
+      <div class="bills-container">
+        <h3>Your Bills</h3>
+        <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+        <ul *ngIf="bills.length > 0; else noBillsMessage">
+          <li *ngFor="let bill of bills">
+            <div class="bill-details">
+              <span>{{ bill.description }}</span>
+              <span class="bill-amount">${{ bill.amount.toFixed(2) }}</span>
+            </div>
+            <button class="pay-btn" (click)="payBill(bill.id)">Pay</button>
+          </li>
+        </ul>
+        <ng-template #noBillsMessage>
+          <p>No bills to show. You're all caught up!</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  

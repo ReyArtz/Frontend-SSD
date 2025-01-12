@@ -1,23 +1,146 @@
-/* Add this to deposit-money.component.css */
+/* General Layout */
+.main-container {
+  display: flex;
+  height: 70vh;
+  background-color: #fafafa;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #f1f1f1;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 15px 0;
+}
+
+.sidebar ul li button {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.sidebar ul li button:hover {
+  background-color: #0056b3;
+}
+
+/* Top Bar */
+.top-bar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 10px 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.top-bar h2 {
+  font-size: 20px;
+  color: #333;
+}
+
 .logout-btn {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    padding: 8px 16px;
-    font-size: 14px;
-    background-color: #ff4d4d;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .logout-btn:hover {
-    background-color: #ff1a1a;
-  }
-  
-  .deposit-money-container {
-    margin-top: 50px;
-    /* Your other styles for the container */
-  }
-  
+  padding: 10px 15px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #cc0000;
+}
+
+/* Content Area */
+.content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Deposit Money Form */
+.deposit-money-box {
+  max-width: 400px;
+  width: 100%;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.deposit-money-box h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.deposit-money-box .form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.deposit-money-box .form-group label {
+  font-size: 16px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.deposit-money-box .form-group input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.deposit-money-box .form-group input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* Error Message */
+.error-message {
+  color: red;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* Deposit Button */
+.deposit-money-box button {
+  width: 100%;
+  padding: 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.deposit-money-box button:hover {
+  background-color: #218838;
+}

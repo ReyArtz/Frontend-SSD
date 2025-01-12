@@ -1,62 +1,133 @@
-.send-money-container {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  h2 {
-    text-align: center;
-    color: #333;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: block;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  input {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  
-  input:focus {
-    outline: none;
-    border-color: #007bff;
-  }
-  
-  button {
-    width: 100%;
-    padding: 10px;
-    font-size: 18px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  .error-message {
-    color: red;
-    font-size: 14px;
-    text-align: center;
-    margin-top: 10px;
-  }
-  
+/* General Layout */
+.main-container {
+  display: flex;
+  height: 100vh;
+  background-color: #fafafa;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #f1f1f1;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 15px 0;
+}
+
+.sidebar ul li button {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.sidebar ul li button:hover {
+  background-color: #0056b3;
+}
+
+/* Top Bar */
+.top-bar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 10px 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.top-bar h2 {
+  font-size: 20px;
+  color: #333;
+}
+
+.logout-btn {
+  padding: 10px 15px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #cc0000;
+}
+
+/* Content Area */
+.content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+/* Send Money Form */
+.send-money-form {
+  margin-top: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.send-money-form .form-group {
+  margin-bottom: 20px;
+}
+
+.send-money-form .form-group label {
+  font-size: 16px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.send-money-form .form-group input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.send-money-form .form-group input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* Error Message */
+.error-message {
+  color: red;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* Send Money Button */
+.send-money-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.send-money-form button:hover {
+  background-color: #218838;
+}

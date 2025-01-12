@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { Router } from '@angular/router';
 import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { HttpClient } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Add FormsModule here
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
@@ -18,6 +19,7 @@ export class RegisterComponent {
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
+  userType: string = 'user'; // Default user type is 'user'
   errorMessage: string = '';
 
   constructor(private router: Router, private http: HttpClient) {}
@@ -25,7 +27,7 @@ export class RegisterComponent {
   // Method to register with email
   registerWithEmail() {
     // Check if all fields are filled out
-    if (!this.email || !this.password || !this.confirmPassword) {
+    if (!this.email || !this.password || !this.confirmPassword || !this.userType) {
       this.errorMessage = 'All fields are required';
       return;
     }
@@ -50,9 +52,20 @@ export class RegisterComponent {
         console.log('User registered:', userCredential.user);
         this.errorMessage = '';
 
-        // this.http.post('/create', { type: "user" }); //deafault value, should be a user input. This is used to create a user in the database
-
-        this.router.navigate(['/login']);
+        // Send user type to the backend
+        this.http.post('/create', { 
+          email: this.email, 
+          type: this.userType 
+        }).subscribe({
+          next: () => {
+            console.log('User type saved to backend');
+            this.router.navigate(['/login']); // Redirect to login page after successful registration
+          },
+          error: (err) => {
+            console.error('Error saving user type:', err);
+            this.errorMessage = 'Error saving user type. Please try again.';
+          }
+        });
       })
       .catch((error) => {
         console.error('Registration error:', error.message);
@@ -70,11 +83,25 @@ export class RegisterComponent {
       .then((result) => {
         console.log('Google registration successful:', result.user);
         this.errorMessage = ''; // Clear any previous errors
-        this.router.navigate(['/login']); // Redirect to login page after successful Google registration
+
+        // Send user type to the backend (default type for Google registration is 'user')
+        this.http.post('/create', { 
+          email: result.user.email, 
+          type: this.userType 
+        }).subscribe({
+          next: () => {
+            console.log('User type saved to backend for Google user');
+            this.router.navigate(['/login']); // Redirect to login page
+          },
+          error: (err) => {
+            console.error('Error saving user type for Google user:', err);
+            this.errorMessage = 'Error saving user type for Google user. Please try again.';
+          }
+        });
       })
       .catch((error) => {
         console.error('Google registration error:', error.message);
-        this.errorMessage = 'Failed to register with Google. Please try again.'; // Display error message for Google login
+        this.errorMessage = 'Failed to register with Google. Please try again.';
       });
   }
 

@@ -1,82 +1,75 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { getAuth } from 'firebase/auth';
-import { getDatabase, ref, get, set } from 'firebase/database';
+import { getAuth, signOut } from 'firebase/auth';
+import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-send-money',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,HttpClientModule,CommonModule],
   templateUrl: './send-money.component.html',
   styleUrls: ['./send-money.component.css']
 })
 export class SendMoneyComponent {
-  recipient: string = '';  // The name of the person the user is sending money to
-  amount: number = 0;  // The amount the user wants to send
-  errorMessage: string = '';  // Error message in case something goes wrong
+  recipient: string = '';
+  amount: number = 0;
+  errorMessage: string = '';
+  currentPage: string = 'send-money';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private http: HttpClient) {}
 
   sendMoney() {
     const auth = getAuth();
     const userId = auth.currentUser?.uid;
-    const userName = auth.currentUser?.displayName;
+    const userEmail = auth.currentUser?.email;
 
-    // Check if recipient is the same as the logged-in user
-    if (this.recipient.toLowerCase() === userName?.toLowerCase()) {
-      this.errorMessage = 'You cannot send money to yourself!';
-      return;  // Early return in case of error
-    }
-
-    // Validate input
     if (!this.recipient || this.amount <= 0) {
       this.errorMessage = 'Please enter a valid recipient and amount.';
-      return;  // Early return in case of missing information
+      return;
+    }
+
+    if (this.recipient.toLowerCase() === userEmail?.toLowerCase()) {
+      this.errorMessage = 'You cannot send money to yourself!';
+      return;
     }
 
     if (!userId) {
       this.errorMessage = 'User not logged in.';
-      return;  // Early return in case user is not logged in
+      return;
     }
 
-    // Fetch user balance from the database
-    const db = getDatabase();
-    const balanceRef = ref(db, 'users/' + userId + '/balance');
-    
-    get(balanceRef).then((snapshot) => {
-      const currentBalance = snapshot.val();
-      
-      // Check for sufficient balance
-      if (currentBalance < this.amount) {
-        this.errorMessage = 'Insufficient balance!';
-        return;  // Early return in case balance is insufficient
+    this.http.post('/transfer', {
+      senderId: userId,
+      recipient: this.recipient,
+      amount: this.amount
+    }).subscribe({
+      next: (response: any) => {
+        alert(`Money sent to ${this.recipient}! Amount: $${this.amount}`);
+        this.router.navigate(['/main']);
+      },
+      error: (err) => {
+        console.error('Error during money transfer:', err);
+        this.errorMessage = err.error?.message || 'An error occurred. Please try again.';
       }
-
-      const newBalance = currentBalance - this.amount;
-      set(ref(db, 'users/' + userId), { balance: newBalance });
-
-      // Handle recipient's balance update
-      const recipientRef = ref(db, 'users/' + this.recipient);
-      get(recipientRef).then((recipientSnapshot) => {
-        if (recipientSnapshot.exists()) {
-          const recipientBalance = recipientSnapshot.val().balance || 0;
-          const updatedRecipientBalance = recipientBalance + this.amount;
-          set(ref(db, 'users/' + this.recipient), { balance: updatedRecipientBalance });
-          this.errorMessage = '';  // Clear any error messages
-          alert(`Money sent to ${this.recipient}! Amount: $${this.amount}`);
-
-          // After sending money, navigate back to the main page
-          this.router.navigate(['/main']);
-        } else {
-          this.errorMessage = 'Recipient not found!';
-        }
-      }).catch((error) => {
-        this.errorMessage = 'Error updating recipient balance: ' + error.message;
-      });
-
-    }).catch((error) => {
-      this.errorMessage = 'Error fetching balance: ' + error.message;
     });
+  }
+
+  logout() {
+    const auth = getAuth();
+
+    signOut(auth).then(() => {
+      console.log('User signed out');
+      this.router.navigate(['/login']);
+    }).catch((error) => {
+      console.error('Logout error:', error);
+      this.errorMessage = 'Error signing out. Please try again.';
+    });
+  }
+  navigateTo(path: string) {
+    this.currentPage = path;
+    this.router.navigate([path]);
   }
 }

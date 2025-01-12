@@ -1,28 +1,49 @@
-<div class="deposit-money-container">
-    <!-- Logout Button -->
-    <button class="logout-btn" (click)="logout()">Logout</button>
-  
-    <h2>Deposit Money</h2>
-    <form (ngSubmit)="depositMoney()">
-      <div class="form-group">
-        <label for="amount">Amount</label>
-        <input
-          type="number"
-          id="amount"
-          [(ngModel)]="amount"
-          name="amount"
-          placeholder="Enter amount to deposit"
-          class="form-control"
-          required
-          min="1"
-        />
-      </div>
-  
-      <div *ngIf="errorMessage" class="error-message">
-        {{ errorMessage }}
-      </div>
-  
-      <button type="submit" class="btn btn-primary">Deposit Money</button>
-    </form>
+<div class="main-container">
+  <!-- Sidebar Menu -->
+  <div class="sidebar">
+    <h2>Menu</h2>
+    <ul>
+      <li><button (click)="navigateTo('main')">View/Modify Balance</button></li>
+      <li><button (click)="navigateTo('send-money')">Send Money</button></li>
+      <li><button (click)="navigateTo('deposit-money')">Deposit Money</button></li>
+      <li><button (click)="navigateTo('taxes')">Taxes</button></li>
+      <li><button (click)="navigateTo('history')">View History</button></li>
+    </ul>
   </div>
-  
+
+  <!-- Content Area -->
+  <div class="content-area">
+    <!-- Top Bar with Logout -->
+    <div class="top-bar">
+      <h2>Deposit Money</h2>
+      <button (click)="logout()" class="logout-btn">Logout</button>
+    </div>
+
+    <!-- Deposit Money Form -->
+    <div class="deposit-money-form">
+      <form (ngSubmit)="depositMoney()">
+        <div class="form-group">
+          <label for="amount">Deposit Amount</label>
+          <input
+            type="number"
+            id="amount"
+            [(ngModel)]="amount"
+            name="amount"
+            placeholder="Enter deposit amount"
+            class="form-control"
+            required
+            min="1"
+          />
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Deposit Button -->
+        <button type="submit" class="btn btn-primary">Deposit</button>
+      </form>
+    </div>
+  </div>
+</div>

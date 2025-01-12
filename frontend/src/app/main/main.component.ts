@@ -3,12 +3,13 @@ import { Router, RouterModule } from '@angular/router';
 import { getAuth, signOut } from 'firebase/auth';
 import { environment } from '../../environments/environment';
 import { initializeApp } from 'firebase/app';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, HttpClientModule,CommonModule],
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
@@ -18,9 +19,10 @@ export class MainComponent implements OnInit {
   user: any;
   balance: number = 0;
   errorMessage: string = '';
+  currentPage: string = 'main';  
 
   constructor(private router: Router, private http: HttpClient) {
-    initializeApp(environment.firebaseConfig); // Initialize Firebase with environment config
+    initializeApp(environment.firebaseConfig);
     const auth = getAuth();
     this.user = auth.currentUser;
   }
@@ -34,38 +36,37 @@ export class MainComponent implements OnInit {
   }
 
   fetchBalance() {
-    this.http.get('/balance').subscribe((data: any) => { //ceva de genul asta ar trebui sa fie
-      this.balance = data.balance;
+    this.http.get('/balance').subscribe({
+      next: (data: any) => {
+        this.balance = data.balance;
+      },
+      error: (error: any) => {
+        console.error('Error fetching balance:', error);
+        this.errorMessage = 'Error fetching balance. Please try again later.';
+      }
     });
   }
 
-  updateBalance(newBalance: number) {
-    // const db = getDatabase();
-    // const balanceRef = ref(db, 'users/' + this.user.uid);
+  refreshBalance() {
+    this.fetchBalance();  
+  }
 
-    // set(balanceRef, {
-    //   balance: newBalance
-    // }).then(() => {
-    //   this.balance = newBalance; 
-    // }).catch((error: any) => {
-    //   console.error("Error updating balance:", error);
-    //   this.errorMessage = "Error updating balance.";
-    // });
-    return -1;
+  checkBalance() {
+    alert(`Your current balance is: $${this.balance}`);
   }
 
   logout() {
     const auth = getAuth();
     signOut(auth).then(() => {
-      this.router.navigate(['/login']); // for logout
+      this.router.navigate(['/login']); 
     }).catch((error: any) => {
-      console.error("Error signing out:", error);
-      this.errorMessage = "Error signing out.";
+      console.error('Error signing out:', error);
+      this.errorMessage = 'Error signing out. Please try again.';
     });
   }
 
-  //menu
   navigateTo(path: string) {
+    this.currentPage = path;  // Update current page to show balance section when on 'main'
     this.router.navigate([path]);
   }
 }
