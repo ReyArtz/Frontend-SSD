@@ -12,5 +12,6 @@ export const environment = {
       measurementId: "G-WSCBMT162F"
     },
     baseUrl: 'https://proiect-ssd-87104b92fa7e.herokuapp.com'
+    // baseUrl: 'http://localhost:8080'
   };
   

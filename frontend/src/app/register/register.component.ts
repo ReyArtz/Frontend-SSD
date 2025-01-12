@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
+import { initializeApp } from 'firebase/app';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -25,7 +27,7 @@ export class RegisterComponent {
   constructor(private router: Router, private http: HttpClient) {}
 
   // Method to register with email
-  registerWithEmail() {
+  async registerWithEmail() {
     // Check if all fields are filled out
     if (!this.email || !this.password || !this.confirmPassword || !this.userType) {
       this.errorMessage = 'All fields are required';
@@ -44,32 +46,42 @@ export class RegisterComponent {
       return;
     }
 
-    const auth = getAuth();
+    const app = initializeApp(environment.firebaseConfig);
+    const auth = getAuth(app);
+
+    sessionStorage.setItem('token','');
+    let token = '';
 
     // Attempt to create the user with email/password
-    createUserWithEmailAndPassword(auth, this.email, this.password)
+    await createUserWithEmailAndPassword(auth, this.email, this.password)
       .then((userCredential) => {
         console.log('User registered:', userCredential.user);
         this.errorMessage = '';
 
-        // Send user type to the backend
-        this.http.post('/create', { 
-          email: this.email, 
-          type: this.userType 
-        }).subscribe({
-          next: () => {
-            console.log('User type saved to backend');
-            this.router.navigate(['/login']); // Redirect to login page after successful registration
-          },
-          error: (err) => {
-            console.error('Error saving user type:', err);
-            this.errorMessage = 'Error saving user type. Please try again.';
-          }
-        });
+        // @ts-ignore
+        token = userCredential.user.accessToken;
+        sessionStorage.setItem('token',token);
       })
       .catch((error) => {
         console.error('Registration error:', error.message);
         this.errorMessage = error.message;
+      });
+
+      if(this.userType === 'facturier') {
+        this.userType = 'fact';
+      }
+      // Send user type to the backend
+      this.http.post('/create', { 
+        "type": this.userType 
+      }).subscribe({
+        next: () => {
+          console.log('User type saved to backend');
+          this.router.navigate(['/login']); // Redirect to login page after successful registration
+        },
+        error: (err) => {
+          console.error('Error saving user type:', err);
+          this.errorMessage = 'Error saving user type. Please try again.';
+        }
       });
   }
 

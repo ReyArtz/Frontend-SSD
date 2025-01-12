@@ -29,7 +29,7 @@
         <ul>
           <li *ngFor="let transaction of transactions">
             <div class="transaction-item">
-              <span class="transaction-description">{{ transaction.description }}</span>
+              <span class="transaction-description">{{ transaction.message }}</span>
               <span class="transaction-date">{{ transaction.date | date: 'short' }}</span>
               <span class="transaction-amount">${{ transaction.amount }}</span>
             </div>

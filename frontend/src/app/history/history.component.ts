@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { getAuth, signOut } from 'firebase/auth';  // Import signOut from Firebase Authentication
@@ -14,7 +14,9 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrls: ['./history.component.css'],
   providers: [DatePipe]
 })
-export class HistoryComponent implements OnInit {
+
+@Injectable()
+export class HistoryComponent{
   transactions: any[] = [];
   errorMessage: string = '';
 
@@ -22,24 +24,14 @@ export class HistoryComponent implements OnInit {
     private router: Router,
     private http: HttpClient,
     private datePipe: DatePipe
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this.fetchTransactionHistory();
   }
 
   fetchTransactionHistory() {
-    const auth = getAuth();
-    const userId = auth.currentUser?.uid;
-
-    if (!userId) {
-      this.errorMessage = 'User not logged in.';
-      return;
-    }
-
-    this.http.get(`/history/${userId}`).subscribe({
+    this.http.get(`/history`).subscribe({
       next: (data: any) => {
-        this.transactions = data.transactions;
+        this.transactions = data;
       },
       error: (error: any) => {
         console.error('Error fetching transaction history:', error);

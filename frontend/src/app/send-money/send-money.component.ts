@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { getAuth, signOut } from 'firebase/auth';
 import { HttpClient } from '@angular/common/http';
@@ -13,6 +13,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './send-money.component.html',
   styleUrls: ['./send-money.component.css']
 })
+
+@Injectable()
 export class SendMoneyComponent {
   recipient: string = '';
   amount: number = 0;
@@ -22,29 +24,9 @@ export class SendMoneyComponent {
   constructor(private router: Router, private http: HttpClient) {}
 
   sendMoney() {
-    const auth = getAuth();
-    const userId = auth.currentUser?.uid;
-    const userEmail = auth.currentUser?.email;
-
-    if (!this.recipient || this.amount <= 0) {
-      this.errorMessage = 'Please enter a valid recipient and amount.';
-      return;
-    }
-
-    if (this.recipient.toLowerCase() === userEmail?.toLowerCase()) {
-      this.errorMessage = 'You cannot send money to yourself!';
-      return;
-    }
-
-    if (!userId) {
-      this.errorMessage = 'User not logged in.';
-      return;
-    }
-
     this.http.post('/transfer', {
-      senderId: userId,
-      recipient: this.recipient,
-      amount: this.amount
+      "email": this.recipient,
+      "amount": this.amount
     }).subscribe({
       next: (response: any) => {
         alert(`Money sent to ${this.recipient}! Amount: $${this.amount}`);

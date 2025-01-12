@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { getAuth, signOut } from 'firebase/auth';
@@ -13,6 +13,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './deposit-money.component.html',
   styleUrls: ['./deposit-money.component.css']
 })
+
+@Injectable()
 export class DepositMoneyComponent {
   amount: number = 0;
   errorMessage: string = '';
@@ -21,23 +23,9 @@ export class DepositMoneyComponent {
   constructor(private router: Router, private http: HttpClient) {}
 
   depositMoney() {
-    const auth = getAuth();
-    const userId = auth.currentUser?.uid;
-
-    if (this.amount <= 0) {
-      this.errorMessage = 'Please enter a valid deposit amount.';
-      return;
-    }
-
-    if (!userId) {
-      this.errorMessage = 'User not logged in.';
-      return;
-    }
-
     // Call the backend endpoint to modify funds
     this.http.post('/modifyfunds', {
-      userId: userId,
-      amount: this.amount,
+      "amount": this.amount
     }).subscribe({
       next: (response: any) => {
         alert(`Successfully deposited $${this.amount}!`);
