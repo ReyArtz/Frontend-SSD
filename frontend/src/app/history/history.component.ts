@@ -1,8 +1,8 @@
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { getAuth, signOut } from 'firebase/auth';  // Import signOut from Firebase Authentication
-import { DatePipe } from '@angular/common';
+import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -16,16 +16,21 @@ import { HttpClientModule } from '@angular/common/http';
 })
 
 @Injectable()
-export class HistoryComponent{
+export class HistoryComponent implements OnInit {
   transactions: any[] = [];
   errorMessage: string = '';
 
   constructor(
     private router: Router,
     private http: HttpClient,
-    private datePipe: DatePipe
-  ) {
-    this.fetchTransactionHistory();
+    private datePipe: DatePipe,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
+
+  ngOnInit() {
+    if(isPlatformBrowser(this.platformId)) {
+      this.fetchTransactionHistory();
+    }
   }
 
   fetchTransactionHistory() {

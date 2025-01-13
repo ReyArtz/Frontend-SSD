@@ -1,8 +1,8 @@
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpClientJsonpModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { getAuth, signOut } from 'firebase/auth';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
 @Component({
@@ -14,19 +14,24 @@ import { HttpClientModule } from '@angular/common/http';
 })
 
 @Injectable()
-export class TaxesComponent{
+export class TaxesComponent implements OnInit {
   bills: any[] = [];
   errorMessage: string = '';
   currentPage: string = 'taxes'; // For menu highlighting
 
-  constructor(private router: Router, private http: HttpClient) {
-    this.fetchBills();
+  constructor(private router: Router, private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
+  }
+
+  ngOnInit() {
+    if(isPlatformBrowser(this.platformId)) {
+      this.fetchBills();
+    }
   }
 
   fetchBills() {
     this.http.get('/bills').subscribe({
       next: (data: any) => {
-        this.bills = data; // Assuming `data.bills` contains the list of bills
+        this.bills = data;
       },
       error: (error) => {
         if(error.status === 404) {
