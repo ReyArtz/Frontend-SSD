@@ -7,7 +7,7 @@ import { SendMoneyComponent } from './send-money/send-money.component';
 import { DepositMoneyComponent } from './deposit-money/deposit-money.component';
 import { TaxesComponent } from './taxes/taxes.component';
 import { HistoryComponent } from './history/history.component'; 
-
+import { FacturierComponent } from './facturier/facturier.component';
 
 export const routes: Routes = [
   {
@@ -46,6 +46,10 @@ export const routes: Routes = [
   {
     path: 'history',
     component: HistoryComponent, 
+  },
+  {
+    path:'facturier',
+    component: FacturierComponent,
   }
   
 ];

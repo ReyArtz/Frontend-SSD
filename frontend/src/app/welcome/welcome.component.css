@@ -1,19 +1,21 @@
-/* welcome.component.css */
+
 .welcome-container {
     text-align: center;
     margin-top: 50px;
+    color: #fff;
   }
   
   button {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #2074b5;
+    background: #840584;
     color: white;
     border: none;
     cursor: pointer;
+    border-radius: 40px;
   }
   
   button:hover {
-    background-color: #1924c2;
+    background-color: #500450;
   }
   

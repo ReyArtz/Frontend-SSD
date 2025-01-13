@@ -1,0 +1,66 @@
+<div class="main-container">
+    <!-- Left Sidebar Menu -->
+    <div class="sidebar">
+      <h2>Menu</h2>
+      <ul>
+        <li><button (click)="navigateTo('main')">View/Modify Balance</button></li>
+        <li><button (click)="navigateTo('send-money')">Send Money</button></li>
+        <li><button (click)="navigateTo('deposit-money')">Deposit Money</button></li>
+        <li><button (click)="navigateTo('taxes')">Taxes</button></li>
+        <li><button (click)="navigateTo('history')">View History</button></li>
+        <li><button (click)="navigateTo('facturier')">Send Bill</button></li>
+      </ul>
+    </div>
+  
+    <!-- Main Content Area -->
+    <div class="content-area">
+      <div class="top-bar">
+        <h2>Welcome, {{ user?.displayName }}</h2>
+        <button class="logout-btn" (click)="logout()">Logout</button>
+      </div>
+  
+      <!-- Send Bill Section -->
+      <div class="facturier-form">
+        <h3>Send a Bill</h3>
+        <form (submit)="sendBill()">
+          <div class="form-group">
+            <label for="recipient">Recipient Email</label>
+            <input
+              type="email"
+              id="recipient"
+              [(ngModel)]="recipient"
+              name="recipient"
+              required
+              class="form-control"
+            />
+          </div>
+  
+          <div class="form-group">
+            <label for="amount">Amount</label>
+            <input
+              type="number"
+              id="amount"
+              [(ngModel)]="amount"
+              name="amount"
+              min="0"
+              required
+              class="form-control"
+            />
+          </div>
+  
+          <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
+          <div class="success-message" *ngIf="successMessage">{{ successMessage }}</div>
+  
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="isLoading"
+          >
+            <span *ngIf="isLoading">Sending...</span>
+            <span *ngIf="!isLoading">Send Bill</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
