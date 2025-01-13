@@ -8,6 +8,7 @@ import { DepositMoneyComponent } from './deposit-money/deposit-money.component';
 import { TaxesComponent } from './taxes/taxes.component';
 import { HistoryComponent } from './history/history.component'; 
 
+
 export const routes: Routes = [
   {
     path: '',
@@ -46,4 +47,5 @@ export const routes: Routes = [
     path: 'history',
     component: HistoryComponent, 
   }
+  
 ];

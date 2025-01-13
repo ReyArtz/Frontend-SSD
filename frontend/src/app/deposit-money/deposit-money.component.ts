@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-deposit-money',
   standalone: true,
-  imports: [FormsModule,HttpClientModule,CommonModule],
+  imports: [FormsModule, HttpClientModule, CommonModule],
   templateUrl: './deposit-money.component.html',
   styleUrls: ['./deposit-money.component.css']
 })
@@ -18,28 +18,35 @@ import { CommonModule } from '@angular/common';
 export class DepositMoneyComponent {
   amount: number = 0;
   errorMessage: string = '';
-  currentPage: string = 'deposit-money'; // Set the current page for highlighting the menu
+  currentPage: string = 'deposit-money';
 
   constructor(private router: Router, private http: HttpClient) {}
 
   depositMoney() {
-    // Call the backend endpoint to modify funds
+    if (this.amount === 0) {
+      alert('Amount cannot be zero. Please enter a valid amount.');
+      return;
+    }
+
+    const isWithdrawal = this.amount < 0; // Check if the amount is negative
+    const operation = isWithdrawal ? 'withdrawn' : 'deposited';
+
     this.http.post('/modifyfunds', {
       "amount": this.amount
     }).subscribe({
       next: (response: any) => {
-        alert(`Successfully deposited $${this.amount}!`);
-        this.router.navigate(['/main']); // Navigate back to the main page
+        alert(`Successfully ${operation} $${Math.abs(this.amount)}!`); // Display positive value for amount
+        this.router.navigate(['/main']); 
       },
       error: (error) => {
-        console.error('Error during deposit:', error);
+        console.error('Error during transaction:', error);
         this.errorMessage = error.error?.message || 'An error occurred. Please try again.';
       }
     });
   }
 
   navigateTo(path: string) {
-    this.currentPage = path; // Update the current page
+    this.currentPage = path; 
     this.router.navigate([path]);
   }
 

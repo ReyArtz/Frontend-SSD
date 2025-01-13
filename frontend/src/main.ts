@@ -14,7 +14,7 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
-    FormsModule,  // Add FormsModule to the providers array here
+    FormsModule, 
     provideHttpClient(withFetch()), {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
