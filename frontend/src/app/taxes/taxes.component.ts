@@ -45,6 +45,12 @@ export class TaxesComponent implements OnInit {
 
   payBill(billId: string) {
 
+    if(!billId) {
+      console.error('Invalid bill ID:', billId);
+      this.errorMessage = 'Invalid bill ID. Please try again.';
+      return;
+    }
+
     this.http.get(`/paybill/${billId}`).subscribe({
       next: () => {
         alert('Bill paid successfully!');

@@ -31,7 +31,7 @@
               <span>{{ bill.description }}</span>
               <span class="bill-amount">${{ bill.amount.toFixed(2) }}</span>
             </div>
-            <button class="pay-btn" (click)="payBill(bill.id)">Pay</button>
+            <button class="pay-btn" (click)="payBill(bill.uid)">Pay</button>
           </li>
         </ul>
         <ng-template #noBillsMessage>
